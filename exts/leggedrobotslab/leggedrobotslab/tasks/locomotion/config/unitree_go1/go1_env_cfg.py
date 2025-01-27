@@ -451,7 +451,7 @@ class RewardsCfg:
     # pen_joint_vel_limits = RewTerm(
     #     func=mdp.joint_vel_limits, weight=0.0, params={"asset_cfg": SceneEntityCfg("robot", joint_names=".*")}
     # )
-    pen_joint_power = RewTerm(func=mdp.joint_power, weight=-2.0e-5)
+    pen_joint_power = RewTerm(func=mdp.joint_powers_l1, weight=-2.0e-5)
     # pen_joint_deviation_hip = RewTerm(
     #     func=mdp.joint_deviation_l1,
     #     weight=-0.005,

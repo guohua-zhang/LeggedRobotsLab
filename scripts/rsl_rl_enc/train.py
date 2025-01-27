@@ -46,7 +46,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, R
 
 # Import extensions to set up environment tasks
 import leggedrobotslab  # noqa: F401
-from leggedrobotslab.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerMlpCfg
+from leggedrobotslab.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerEncCfg
 from rsl_rl.runners import OnPolicyRunner, OnPolicyRunnerMlp
 
 torch.backends.cuda.matmul.allow_tf32 = True
@@ -61,7 +61,7 @@ def main():
     env_cfg: ManagerBasedRLEnvCfg = parse_env_cfg(
         task_name=args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs
     )
-    agent_cfg: RslRlOnPolicyRunnerMlpCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
+    agent_cfg: RslRlOnPolicyRunnerEncCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
     if args_cli.max_iterations is not None:
         agent_cfg.max_iterations = args_cli.max_iterations

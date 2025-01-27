@@ -220,6 +220,19 @@ def stand_still(
     return total_reward
 
 
+def stand_still_when_zero_command(
+    env, command_name: str, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
+) -> torch.Tensor:
+    """Penalize joint positions that deviate from the default one when no command."""
+    # extract the used quantities (to enable type-hinting)
+    asset: Articulation = env.scene[asset_cfg.name]
+    # compute out of limits constraints
+    diff_angle = asset.data.joint_pos[:, asset_cfg.joint_ids] - asset.data.default_joint_pos[:, asset_cfg.joint_ids]
+    command = torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1) < 0.1
+    return torch.sum(torch.abs(diff_angle), dim=1) * command
+
+
+
 # def feet_regulation(
 #     env: ManagerBasedRLEnv,
 #     sensor_cfg: SceneEntityCfg,

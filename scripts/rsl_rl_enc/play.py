@@ -39,7 +39,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerCfg, R
 
 # Import extensions to set up environment tasks
 import leggedrobotslab  # noqa: F401
-from leggedrobotslab.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerMlpCfg, export_mlp_encoder_as_onnx
+from leggedrobotslab.utils.wrappers.rsl_rl import RslRlOnPolicyRunnerEncCfg, export_enc_encoder_as_onnx
 from rsl_rl.runners import OnPolicyRunner, OnPolicyRunnerMlp
 
 
@@ -49,7 +49,7 @@ def main():
     env_cfg: ManagerBasedRLEnvCfg = parse_env_cfg(
         task_name=args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs
     )
-    agent_cfg: RslRlOnPolicyRunnerMlpCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
+    agent_cfg: RslRlOnPolicyRunnerEncCfg = cli_args.parse_rsl_rl_cfg(args_cli.task, args_cli)
 
     # create isaac environment
     env = gym.make(args_cli.task, cfg=env_cfg)
@@ -79,7 +79,7 @@ def main():
     # export policy to onnx
     export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
     export_policy_as_onnx(ppo_runner.alg.actor_critic, export_model_dir, filename="policy.onnx")
-    export_mlp_encoder_as_onnx(
+    export_enc_encoder_as_onnx(
         # ppo_runner.obs_normalizer.mean.shape[0],
         ppo_runner.alg.mlp.proprio_input_dim,
         ppo_runner.alg.mlp.proprio_mlp,
