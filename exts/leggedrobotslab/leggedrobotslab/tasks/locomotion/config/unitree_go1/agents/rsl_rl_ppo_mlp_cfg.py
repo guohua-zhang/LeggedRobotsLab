@@ -9,12 +9,12 @@ from leggedrobotslab.utils.wrappers.rsl_rl import (
 
 
 @configclass
-class PFFlatPPORunnerEncCfg(RslRlOnPolicyRunnerEncCfg):
+class GO1FlatPPORunnerEncCfg(RslRlOnPolicyRunnerEncCfg):
     runner_type = "OnPolicyRunnerMlp"
     num_steps_per_env = 24
     max_iterations = 3001
     save_interval = 200
-    experiment_name = "pf_flat"
+    experiment_name = "go1_flat"
     run_name = ""
     empirical_normalization = False
     policy = RslRlPpoActorCriticCfg(
@@ -48,10 +48,10 @@ class PFFlatPPORunnerEncCfg(RslRlOnPolicyRunnerEncCfg):
     )
 
 
-class PFRoughPPORunnerEncCfg(PFFlatPPORunnerEncCfg):
+class GO1RoughPPORunnerEncCfg(GO1FlatPPORunnerEncCfg):
     def __post_init__(self):
         super().__post_init__()
 
-        self.experiment_name = "pf_rough"
+        self.experiment_name = "go1_rough"
         self.run_name = ""
         self.runner_type = "OnPolicyRunnerMlp"

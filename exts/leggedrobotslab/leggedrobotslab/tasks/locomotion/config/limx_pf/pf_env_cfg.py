@@ -178,7 +178,7 @@ class ActionsCfg:
 
 
 @configclass
-class ObservarionsCfg:
+class ObservationsCfg:
     """Observation specifications for the MDP"""
 
     @configclass
@@ -552,7 +552,7 @@ class PFEnvCfg(ManagerBasedRLEnvCfg):
     # Scene settings
     scene: PFSceneCfg = PFSceneCfg(num_envs=4096, env_spacing=2.5)
     # Basic settings
-    observations: ObservarionsCfg = ObservarionsCfg()
+    observations: ObservationsCfg = ObservationsCfg()
     actions: ActionsCfg = ActionsCfg()
     commands: CommandsCfg = CommandsCfg()
     # MDP settings
