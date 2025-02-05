@@ -3,11 +3,10 @@
 
 from __future__ import annotations
 
+import git
 import os
 import pathlib
 import torch
-
-import git
 
 
 def split_and_pad_trajectories(tensor, dones):
@@ -79,9 +78,8 @@ def store_code_state(logdir, repositories) -> list:
             continue
         # write the diff file
         print(f"Storing git diff for '{repo_name}' in: {diff_file_name}")
-        # with open(file_path, 'w', encoding='utf-8') as f:
-        #     f.write(content)
         with open(diff_file_name, "x", encoding='utf-8') as f:
+        # with open(diff_file_name, "x") as f:
             content = f"--- git status ---\n{repo.git.status()} \n\n\n--- git diff ---\n{repo.git.diff(t)}"
             f.write(content)
         # add the file path to the list of files to be uploaded

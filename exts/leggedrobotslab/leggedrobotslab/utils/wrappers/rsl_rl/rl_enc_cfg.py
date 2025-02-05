@@ -21,7 +21,7 @@ class RslRlOnPolicyRunnerEncCfg(RslRlOnPolicyRunnerCfg):
 class RslRlPpoAlgorithmEncCfg(RslRlPpoAlgorithmCfg):
     """Configuration for the PPO algorithm."""
 
-    class_name: str = "PPO_Mlp"
+    class_name: str = "PPO_MLP"
     """The algorithm class name. Default is PPO_Enc."""
 
 

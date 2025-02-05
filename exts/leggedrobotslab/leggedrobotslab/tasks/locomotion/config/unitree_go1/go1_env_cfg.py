@@ -200,9 +200,9 @@ class ObservationsCfg:
         def __post_init__(self):
             # 带噪声的观测
             self.enable_corruption = True
-            self.concatenate_terms = False
-            self.history_length = 5
-            self.flatten_history_dim = False
+            self.concatenate_terms = True
+            self.history_length = 1
+            self.flatten_history_dim = True
 
     @configclass
     class CriticCfg(ObsGroup):
@@ -236,9 +236,9 @@ class ObservationsCfg:
         def __post_init__(self):
             # 带噪声的观测
             self.enable_corruption = False
-            self.concatenate_terms = False
+            self.concatenate_terms = True
             self.history_length = 1
-            self.flatten_history_dim = False
+            self.flatten_history_dim = True
 
 
     # @configclass
