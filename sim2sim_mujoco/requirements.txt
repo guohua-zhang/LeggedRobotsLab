@@ -1,0 +1,6 @@
+mujoco==3.2.3
+mujoco-python-viewer==0.1.4
+tqdm==4.66.6
+pygame==2.6.1
+noise==1.2.2
+opencv-python==4.10.0.84
