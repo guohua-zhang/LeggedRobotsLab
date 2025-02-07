@@ -12,7 +12,7 @@
 <img src="./images/terrain_walk.gif" width="90%"/>
 </p>
 
-# 1. Environment Setup
+# Environment Setup
 
 ```
 conda create -n locomotion python=3.8
@@ -30,7 +30,7 @@ cd MLM && pip install -r requirements.txt
 cd deployment && pip install -r requirements.txt
 ```
 
-# 2. Run
+# Run
 
 1. Train a policy:
 
@@ -58,7 +58,7 @@ cd deployment && pip install -r requirements.txt
 
 
 
-# 👏 Acknowledgements
+# Acknowledgements
 
 - [legged_gym](https://github.com/leggedrobotics/legged_gym): Our codebase is built upon legged_gym.
 

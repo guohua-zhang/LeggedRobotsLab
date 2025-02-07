@@ -10,7 +10,7 @@ Quadruped robots locomotion learning and deployment framework based on the [unit
 </p>
 
 
-## 0. Dependencies
+## Dependencies
 
 This project uses `ros-noetic` (Ubuntu 20.04) and requires the installation of the following ROS dependency packages:
 
@@ -39,7 +39,7 @@ Download the repository:
 git clone https://github.com/xxxx.git
 ```
 
-## 1. Compile
+## Compile
 
 ### Step1: RL Model
 
@@ -66,7 +66,7 @@ Run in the directory where `src` is located
 catkin_make
 ```
 
-## 2. Run
+## Run
 
 ### Simulation
 

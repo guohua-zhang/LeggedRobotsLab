@@ -28,13 +28,13 @@
 <img src="./img/pf.webp" width="90%"/>
 </p>
 
-# 📝 TODO List
+# TODO List
 
 - \[x\] Release the training code.
 - \[x\] Release the sim2sim code.
 - \[x\] Release the deployment code.
 
-# 🔥 Locomotion Learning
+# Locomotion Learning
 
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-4.2.0-silver.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
 [![Isaac Lab](https://img.shields.io/badge/IsaacLab-1.2.0-silver)](https://isaac-sim.github.io/IsaacLab)
@@ -82,16 +82,18 @@ python -m pip install -e exts/leggedrobotslab
 - Train the locomotion control policy of our robust version
 
 ```bash
-python scripts/rsl_rl/train.py --task=Isaac-Velocity-Rough-Unitree-Go1-HIM-v0 --headless
+python scripts/rsl_rl/train.py --task=Isaac-UnitreeGO1-Blind-Rough-v0 --headless
+python scripts/rsl_rl/train.py --task=Isaac-PF-Blind-Rough-v0 --headless
 ```
 
-- Playthe locomotion control policy of our robust version
+- Play the locomotion control policy of our robust version
 
 ```
-python scripts/rsl_rl/play.py --task=Isaac-Velocity-Rough-Unitree-Go1-Play-HIM-v0
+python scripts/rsl_rl/play.py --task=Isaac-UnitreeGO1-Blind-Rough-Play-v0
+python scripts/rsl_rl/play.py --task=Isaac-PF-Blind-Rough-Play-v0
 ```
 
-# 🔥Sim2sim on Mujoco
+# Sim2sim on Mujoco
 
 Refer to [Sim2sim_guidance](./sim2sim_mujoco/README.md)
 
@@ -104,11 +106,11 @@ pip install -r requirements.txt
 python unitree_go1_controller_him.py
 ```
 
-# 🔥Deployment on Real Robots
+# Deployment on Real Robots
 
 Refer to [Real_guidance](./real/README.md)
 
-# 👏 Acknowledgements
+# Acknowledgements
 
 - [IsaacLab](https://github.com/isaac-sim/IsaacLab): Our codebase is built upon Isaaclab.
 - [rsl_rl](https://github.com/leggedrobotics/rsl_rl): Our codebase is built upon rsl_rl.
