@@ -132,6 +132,18 @@ class MySceneCfg(InteractiveSceneCfg):
 class CommandsCfg:
     """Command specifications for the MDP."""
 
+    gait_command = mdp.UniformGaitCommandCfgQuad(
+        resampling_time_range=(5.0, 5.0),  # Fixed resampling time of 5 seconds
+        debug_vis=False,  # No debug visualization needed
+        ranges=mdp.UniformGaitCommandCfgQuad.Ranges(
+            frequencies=(1.5, 2.5),  # Gait frequency range [Hz]
+            durations=(0.75, 0.75),  # Contact duration range [0-1]
+            offsets2=(0.5, 0.5),  # Phase offset2 range [0-1]
+            offsets3=(0.25, 0.25),  # Phase offset3 range [0-1]
+            offsets4=(0.75, 0.75),  # Phase offset4 range [0-1]
+        ),
+    )
+
     base_velocity = mdp.UniformVelocityCommandCfg(
         asset_name="robot",
         resampling_time_range=(10.0, 10.0),
@@ -189,6 +201,10 @@ class ObservationsCfg:
         #['FL_hip_joint', 'FR_hip_joint', 'RL_hip_joint', 'RR_hip_joint', 'FL_thigh_joint', 'FR_thigh_joint', 'RL_thigh_joint', 'RR_thigh_joint', 'FL_calf_joint', 'FR_calf_joint', 'RL_calf_joint', 'RR_calf_joint']
         actions = ObsTerm(func=mdp.last_action) 
 
+        # gaits
+        gait_phase = ObsTerm(func=mdp.get_gait_phase)
+        gait_command = ObsTerm(func=mdp.get_gait_command, params={"command_name": "gait_command"})
+
         # height_scan
         # height_scan = ObsTerm(
         #     func=mdp.height_scan,
@@ -223,6 +239,11 @@ class ObservationsCfg:
         joint_vel = ObsTerm(func=mdp.joint_vel, noise=UniformNoise(n_min=-1.5, n_max=1.5))
         # last action (3)
         actions = ObsTerm(func=mdp.last_action)
+
+        # gaits
+        gait_phase = ObsTerm(func=mdp.get_gait_phase)
+        gait_command = ObsTerm(func=mdp.get_gait_command, params={"command_name": "gait_command"})
+
         # 线速度 (3)
         base_lin_vel = ObsTerm(func=mdp.base_lin_vel, noise=UniformNoise(n_min=-0.1, n_max=0.1))
         # 高度 (1)
@@ -478,11 +499,11 @@ class RewardsCfg:
             "threshold": 1.0,
         },
     )
-    pen_stand_still_when_zero_command = RewTerm(
-        func=mdp.stand_still_when_zero_command,
-        weight=-0.5,
-        params={"command_name": "base_velocity"},
-    )
+    # pen_stand_still_when_zero_command = RewTerm(
+    #     func=mdp.stand_still_when_zero_command,
+    #     weight=-0.5,
+    #     params={"command_name": "base_velocity"},
+    # )
 
     pen_feet_clearance = RewTerm(
         func=mdp.feet_clearance,
@@ -493,20 +514,20 @@ class RewardsCfg:
         },
     )
     # # Gait reward
-    # pen_gait_reward = RewTerm(
-    #     func=mdp.GaitReward,
-    #     weight=2.0,
-    #     params={
-    #         "tracking_contacts_shaped_force": -1.0,
-    #         "tracking_contacts_shaped_vel": -1.0,
-    #         "gait_force_sigma": 25.0,
-    #         "gait_vel_sigma": 0.25,
-    #         "kappa_gait_probs": 0.05,
-    #         "command_name": "gait_command",
-    #         "sensor_cfg": SceneEntityCfg("contact_forces", body_names="foot_.*"),
-    #         "asset_cfg": SceneEntityCfg("robot", body_names="foot_.*"),
-    #     },
-    # )
+    pen_gait_reward = RewTerm(
+        func=mdp.GaitRewardQuad,
+        weight=1.0,
+        params={
+            "tracking_contacts_shaped_force": -1.0,
+            "tracking_contacts_shaped_vel": -1.0,
+            "gait_force_sigma": 25.0,
+            "gait_vel_sigma": 0.25,
+            "kappa_gait_probs": 0.05,
+            "command_name": "gait_command",
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=".*_foot"),
+            "asset_cfg": SceneEntityCfg("robot", body_names=".*_foot"),
+        },
+    )
 
 
 @configclass
