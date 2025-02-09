@@ -137,10 +137,10 @@ class CommandsCfg:
         debug_vis=False,  # No debug visualization needed
         ranges=mdp.UniformGaitCommandCfgQuad.Ranges(
             frequencies=(1.5, 2.5),  # Gait frequency range [Hz]
-            durations=(0.75, 0.75),  # Contact duration range [0-1]
+            durations=(0.35, 0.35),  # Contact duration range [0-1]
             offsets2=(0.5, 0.5),  # Phase offset2 range [0-1]
-            offsets3=(0.25, 0.25),  # Phase offset3 range [0-1]
-            offsets4=(0.75, 0.75),  # Phase offset4 range [0-1]
+            offsets3=(0.5, 0.5),  # Phase offset3 range [0-1]
+            offsets4=(0.0, 0.0),  # Phase offset4 range [0-1]
         ),
     )
 

@@ -17,7 +17,7 @@ from . import go1_env_cfg
 # Unitree GO1
 unitreego1_blind_rough_runner_cfg_v0 = GO1PPORunnerCfg()
 unitreego1_blind_rough_runner_cfg_v0.experiment_name = "unitreego1_blind_rough_v0"
-unitreego1_blind_rough_runner_cfg_v0.run_name = "v1_rsl_rl"
+unitreego1_blind_rough_runner_cfg_v0.run_name = "v1_rsl_rl_trot"
 unitreego1_blind_rough_runner_cfg_v0.max_iterations = 3001
 
 unitreego1_blind_rough_runner_cfg_v1 = PFRoughPPORunnerEncCfg()
