@@ -8,6 +8,7 @@ from . import pointfoot_env_cfg
 # Unitree GO1
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg import GO1PPORunnerCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_mlp_cfg import GO1RoughPPORunnerEncCfg
+from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_vision import Go1VisionRoughPPORunnerCfg
 from . import go1_env_cfg
 
 ##
@@ -20,10 +21,15 @@ unitreego1_blind_rough_runner_cfg_v0.experiment_name = "unitreego1_blind_rough_v
 unitreego1_blind_rough_runner_cfg_v0.run_name = "v1_rsl_rl_trot"
 unitreego1_blind_rough_runner_cfg_v0.max_iterations = 3001
 
-unitreego1_blind_rough_runner_cfg_v1 = PFRoughPPORunnerEncCfg()
+unitreego1_blind_rough_runner_cfg_v1 = GO1RoughPPORunnerEncCfg()
 unitreego1_blind_rough_runner_cfg_v1.experiment_name = "unitreego1_blind_rough_v1"
 unitreego1_blind_rough_runner_cfg_v1.run_name = "v0"
 unitreego1_blind_rough_runner_cfg_v1.max_iterations = 5001
+
+unitreego1_vision_rough_runner_cfg_v0 = Go1VisionRoughPPORunnerCfg()
+unitreego1_vision_rough_runner_cfg_v0.experiment_name = "unitreego1_vision_rough_v0"
+unitreego1_vision_rough_runner_cfg_v0.run_name = "v0"
+unitreego1_vision_rough_runner_cfg_v0.max_iterations = 5001
 
 # Limx Dynamic Pointfoot
 pf_blind_rough_runner_cfg_v0 = PointFootPPORunnerCfg()
@@ -88,6 +94,31 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": go1_env_cfg.UnitreeGo1BlindRoughEnvCfg_PLAY_v1,
         "rsl_rl_cfg_entry_point": unitreego1_blind_rough_runner_cfg_v1,
+    },
+)
+
+
+#############################
+# UnitreeGO1 Vision Rough Environment v0
+#############################
+
+gym.register(
+    id="Isaac-UnitreeGO1-Vision-Rough-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_vision_rough_runner_cfg_v0,
+    },
+)
+
+gym.register(
+    id="Isaac-UnitreeGO1-Vision-Rough-Play-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_PLAY_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_vision_rough_runner_cfg_v0,
     },
 )
 

@@ -9,9 +9,12 @@ from omni.isaac.lab.managers import SceneEntityCfg
 from omni.isaac.lab.managers.manager_base import ManagerTermBase
 from omni.isaac.lab.managers.manager_term_cfg import ObservationTermCfg
 from omni.isaac.lab.sensors import Camera, ContactSensor, Imu, RayCaster, RayCasterCamera, TiledCamera
+from omni.isaac.lab.sensors import CameraData
+import cv2
 
 if TYPE_CHECKING:
     from omni.isaac.lab.envs import ManagerBasedEnv, ManagerBasedRLEnv
+    from omni.isaac.lab.envs.base_env import BaseEnv
 
 
 def robot_joint_torque(env: ManagerBasedEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")) -> torch.Tensor:
@@ -145,3 +148,55 @@ def robot_base_pose(env: ManagerBasedEnv, asset_cfg: SceneEntityCfg = SceneEntit
     asset: Articulation = env.scene[asset_cfg.name]
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     return asset.data.root_pos_w.to(device)
+
+
+def process_depth_image(env: BaseEnv, sensor_cfg: SceneEntityCfg, data_type: str, visualize=False) -> torch.Tensor:
+    """Process the depth image."""
+    # import ipdb; ipdb.set_trace()
+    # extract the used quantities (to enable type-hinting)
+    sensor: CameraData = env.scene.sensors[sensor_cfg.name].data
+
+    output = sensor.output[data_type].clone().unsqueeze(1)
+    # # output = output[:,:, :-2, 4:-4]
+    near_clip = 0.3
+    far_clip = 2.0
+    output[torch.isnan(output)] = far_clip
+    output[torch.isinf(output)] = far_clip
+
+    # depth_image_size = (output.shape[2], output.shape[3])
+    # output_clone = output.clone().reshape(env.num_envs, depth_image_size[0], depth_image_size[1])[0,:,:]
+    # window_name = "Before clipping"
+    # import ipdb; ipdb.set_trace()
+    # cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    # cv2.imshow(window_name, output_clone.cpu().numpy())
+    # cv2.waitKey(1)
+
+    output = torch.clip(output, near_clip, far_clip)
+    output = output - near_clip
+    # output = F.interpolate(output, size=(53, 30), mode='nearest')
+    # depth_image_size = (output.shape[2], output.shape[3])
+    # output_clone = output.clone().reshape(env.num_envs, depth_image_size[0], depth_image_size[1])[0,:,:]
+    # window_name = "after clipping and normalization"
+    # cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    # cv2.imshow(window_name, output_clone.cpu().numpy())
+    # cv2.waitKey(1)
+
+
+    # process_depth_feature = env.action_manager._terms['paths'].depth_cnn(output)
+    # print("depth shape: ", output.reshape(env.num_envs, -1).shape)
+    # import ipdb; ipdb.set_trace()
+    # path = "/home/yji/Biped/biped_vision/depth_image/"
+    # path=os.path.join(path, str(env.action_manager._terms['paths'].image_count)+".png")
+    # import ipdb; ipdb.set_trace()
+    if visualize:
+        depth_image_size = (output.shape[2], output.shape[3])
+        output_clone = output.clone().reshape(env.num_envs, depth_image_size[0], depth_image_size[1])[0,:,:]
+        window_name = "Depth Image"
+        cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+        cv2.imshow("Depth Image", output_clone.cpu().numpy())
+        cv2.waitKey(1)
+
+    # plt.imsave(path, output_clone.cpu().numpy(), cmap="gray")
+    
+    # print(output)
+    return output.reshape(env.num_envs, -1)
