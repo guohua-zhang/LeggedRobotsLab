@@ -9,6 +9,7 @@ from . import pointfoot_env_cfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg import GO1PPORunnerCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_mlp_cfg import GO1RoughPPORunnerEncCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_vision import Go1VisionRoughPPORunnerCfg
+from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_handstand import GO1HandStandPPORunnerCfg
 from . import go1_env_cfg
 
 ##
@@ -30,6 +31,11 @@ unitreego1_vision_rough_runner_cfg_v0 = Go1VisionRoughPPORunnerCfg()
 unitreego1_vision_rough_runner_cfg_v0.experiment_name = "unitreego1_vision_rough_v0"
 unitreego1_vision_rough_runner_cfg_v0.run_name = "v0"
 unitreego1_vision_rough_runner_cfg_v0.max_iterations = 5001
+
+unitreego1_handstand_rough_runner_cfg_v0 = GO1HandStandPPORunnerCfg()
+unitreego1_handstand_rough_runner_cfg_v0.experiment_name = "unitreego1_handstand_rough_v0"
+unitreego1_handstand_rough_runner_cfg_v0.run_name = "v0"
+unitreego1_handstand_rough_runner_cfg_v0.max_iterations = 3001
 
 # Limx Dynamic Pointfoot
 pf_blind_rough_runner_cfg_v0 = PointFootPPORunnerCfg()
@@ -119,6 +125,31 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_PLAY_v0,
         "rsl_rl_cfg_entry_point": unitreego1_vision_rough_runner_cfg_v0,
+    },
+)
+
+
+#############################
+# UnitreeGO1 HandStand Rough Environment v0
+#############################
+
+gym.register(
+    id="Isaac-UnitreeGO1-HandStand-Rough-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_handstand_rough_runner_cfg_v0,
+    },
+)
+
+gym.register(
+    id="Isaac-UnitreeGO1-HandStand-Rough-Play-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_PLAY_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_handstand_rough_runner_cfg_v0,
     },
 )
 

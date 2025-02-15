@@ -79,17 +79,31 @@ python -m pip install -e exts/leggedrobotslab
 
 ## Run
 
-- Train the locomotion control policy of our robust version
+Unitree GO1 Blind v0
 
-```bash
+```
 python scripts/rsl_rl/train.py --task=Isaac-UnitreeGO1-Blind-Rough-v0 --headless
-python scripts/rsl_rl/train.py --task=Isaac-PF-Blind-Rough-v0 --headless
-```
-
-- Play the locomotion control policy of our robust version
-
-```
 python scripts/rsl_rl/play.py --task=Isaac-UnitreeGO1-Blind-Rough-Play-v0
+```
+
+Unitree GO1 HandStand v0
+
+```
+python scripts/rsl_rl/train.py --task=Isaac-UnitreeGO1-HandStand-Rough-v0 --headless
+python scripts/rsl_rl/play.py --task=Isaac-UnitreeGO1-HandStand-Rough-Play-v0
+```
+
+Unitree GO1 Vision v0
+
+```
+python scripts/rsl_rl_vision/train.py --task=Isaac-UnitreeGO1-Vision-Rough-v0 --headless --use_cnn
+python scripts/rsl_rl_vision/play.py --task=Isaac-UnitreeGO1-Vision-Rough-Play-v0 --use_cnn
+```
+
+Limx TRON1A Blind v0
+
+```
+python scripts/rsl_rl/train.py --task=Isaac-PF-Blind-Rough-v0 --headless
 python scripts/rsl_rl/play.py --task=Isaac-PF-Blind-Rough-Play-v0
 ```
 

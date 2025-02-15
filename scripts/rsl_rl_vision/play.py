@@ -64,8 +64,7 @@ from omni.isaac.lab_tasks.utils.wrappers.rsl_rl import (
     export_policy_as_jit,
 )
 
-from omni.isaac.leggedloco.config import *
-from omni.isaac.leggedloco.utils import RslRlVecEnvHistoryWrapper
+from leggedrobotslab.utils.wrappers.rsl_rl_vision import RslRlVecEnvHistoryWrapper
 
 from utils import quat2eulers
 
