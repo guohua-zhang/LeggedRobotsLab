@@ -138,7 +138,7 @@ gym.register(
     entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={
-        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_v0,
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1HandStandRoughEnvCfg_v0,
         "rsl_rl_cfg_entry_point": unitreego1_handstand_rough_runner_cfg_v0,
     },
 )
@@ -148,7 +148,7 @@ gym.register(
     entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={
-        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1VisionRoughEnvCfg_PLAY_v0,
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1HandStandRoughEnvCfg_PLAY_v0,
         "rsl_rl_cfg_entry_point": unitreego1_handstand_rough_runner_cfg_v0,
     },
 )

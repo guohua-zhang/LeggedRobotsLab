@@ -256,7 +256,7 @@ class EventCfg:
         mode="startup",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=".*"),
-            "static_friction_range": (0.05, 4.5),
+            "static_friction_range": (0.3, 1.0),
             "dynamic_friction_range": (0.3, 0.9),
             "restitution_range": (0.0, 1.0),
             "num_buckets": 64,
@@ -349,10 +349,12 @@ class EventCfg:
     )
 
     reset_robot_joints = EventTerm(
-        func=mdp.reset_joints_by_scale,
+        func=mdp.reset_joints_by_offset,
+        # func=mdp.reset_joints_by_scale,
         mode="reset",
         params={
-            "position_range": (0.5, 1.5), # 0.8 1.2
+            "position_range": (-0.2, 2.0),
+            # "position_range": (0.5, 1.5),
             "velocity_range": (0.0, 0.0),
         },
     )
@@ -436,7 +438,7 @@ class RewardsCfg:
         func=mdp.undesired_contacts,
         weight=-1.0,
         params={
-            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_thigh", ".*_calf"]),
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_thigh"]),
             "threshold": 1.0,
         },
     )
@@ -487,34 +489,6 @@ class RewardsCfg:
         },
     )
 
-    handstand_type = "back"  # which leg on air, can be "front", "back", "left", "right"
-    if handstand_type == "front":
-        air_foot_name = "F.*_foot"
-        pen_handstand_orientation_l2.weight = -1.0
-        pen_handstand_orientation_l2.params["target_gravity"] = [-1.0, 0.0, 0.0]
-        pen_handstand_feet_height_exp.params["target_height"] = 0.5
-    elif handstand_type == "back":
-        air_foot_name = "R.*_foot"
-        pen_handstand_orientation_l2.weight = -1.0
-        pen_handstand_orientation_l2.params["target_gravity"] = [1.0, 0.0, 0.0]
-        pen_handstand_feet_height_exp.params["target_height"] = 0.5
-    elif handstand_type == "left":
-        air_foot_name = ".*L_foot"
-        pen_handstand_orientation_l2.weight = 0
-        pen_handstand_orientation_l2.params["target_gravity"] = [0.0, -1.0, 0.0]
-        pen_handstand_feet_height_exp.params["target_height"] = 0.3
-    elif handstand_type == "right":
-        air_foot_name = ".*R_foot"
-        pen_handstand_orientation_l2.weight = 0
-        pen_handstand_orientation_l2.params["target_gravity"] = [0.0, 1.0, 0.0]
-        pen_handstand_feet_height_exp.params["target_height"] = 0.3
-    pen_handstand_feet_height_exp.weight = 10
-    pen_handstand_feet_height_exp.params["asset_cfg"].body_names = [air_foot_name]
-    pen_handstand_feet_on_air.weight = 1.0
-    pen_handstand_feet_on_air.params["sensor_cfg"].body_names = [air_foot_name]
-    pen_handstand_feet_air_time.weight = 1.0
-    pen_handstand_feet_air_time.params["sensor_cfg"].body_names = [air_foot_name]
-
 
 @configclass
 class TerminationsCfg:
@@ -542,10 +516,9 @@ class TerminationsCfg:
     # joint_effort_out_of_limit
 
     # Contact sensor
-    foot_link_name = ".*_foot"
     base_contact = DoneTerm(
         func=mdp.illegal_contact,
-        params={"sensor_cfg": SceneEntityCfg("contact_forces", body_names=[f"^(?!.*{foot_link_name}).*"]), "threshold": 1.0},
+        params={"sensor_cfg": SceneEntityCfg("contact_forces", body_names=""), "threshold": 1.0},
     )
 
 

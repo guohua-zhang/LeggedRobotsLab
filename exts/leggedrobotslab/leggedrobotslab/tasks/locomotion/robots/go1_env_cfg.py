@@ -136,6 +136,9 @@ class UnitreeGo1VisionRoughEnvCfg_PLAY_v0(UnitreeGo1VisionRoughEnvCfg_v0):
 
 @configclass
 class UnitreeGo1HandStandRoughEnvCfg_v0(Go1HandStandEnvCfg):
+
+    foot_link_name = ".*_foot"
+
     def __post_init__(self):
         super().__post_init__()
 
@@ -144,6 +147,37 @@ class UnitreeGo1HandStandRoughEnvCfg_v0(Go1HandStandEnvCfg):
         self.scene.terrain.terrain_generator.sub_terrains["boxes"].grid_height_range = (0.025, 0.1)
         self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_range = (0.01, 0.06)
         self.scene.terrain.terrain_generator.sub_terrains["random_rough"].noise_step = 0.01
+
+        # HandStand
+        handstand_type = "back"  # which leg on air, can be "front", "back", "left", "right"
+        if handstand_type == "front":
+            air_foot_name = "F.*_foot"
+            self.rewards.pen_handstand_orientation_l2.weight = -1.0
+            self.rewards.pen_handstand_orientation_l2.params["target_gravity"] = [-1.0, 0.0, 0.0]
+            self.rewards.pen_handstand_feet_height_exp.params["target_height"] = 0.5
+        elif handstand_type == "back":
+            air_foot_name = "R.*_foot"
+            self.rewards.pen_handstand_orientation_l2.weight = -1.0
+            self.rewards.pen_handstand_orientation_l2.params["target_gravity"] = [1.0, 0.0, 0.0]
+            self.rewards.pen_handstand_feet_height_exp.params["target_height"] = 0.5
+        elif handstand_type == "left":
+            air_foot_name = ".*L_foot"
+            self.rewards.pen_handstand_orientation_l2.weight = 0
+            self.rewards.pen_handstand_orientation_l2.params["target_gravity"] = [0.0, -1.0, 0.0]
+            self.rewards.pen_handstand_feet_height_exp.params["target_height"] = 0.3
+        elif handstand_type == "right":
+            air_foot_name = ".*R_foot"
+            self.rewards.pen_handstand_orientation_l2.weight = 0
+            self.rewards.pen_handstand_orientation_l2.params["target_gravity"] = [0.0, 1.0, 0.0]
+            self.rewards.pen_handstand_feet_height_exp.params["target_height"] = 0.3
+        self.rewards.pen_handstand_feet_height_exp.weight = 10
+        self.rewards.pen_handstand_feet_height_exp.params["asset_cfg"].body_names = [air_foot_name]
+        self.rewards.pen_handstand_feet_on_air.weight = 1.0
+        self.rewards.pen_handstand_feet_on_air.params["sensor_cfg"].body_names = [air_foot_name]
+        self.rewards.pen_handstand_feet_air_time.weight = 1.0
+        self.rewards.pen_handstand_feet_air_time.params["sensor_cfg"].body_names = [air_foot_name]
+
+        self.terminations.base_contact.params["sensor_cfg"].body_names = [f"^(?!.*{self.foot_link_name}).*"]
 
 
 @configclass
