@@ -10,6 +10,7 @@ from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg i
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_mlp_cfg import GO1RoughPPORunnerEncCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_vision import Go1VisionRoughPPORunnerCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_handstand import GO1HandStandPPORunnerCfg
+from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_gait import GO1GaitPPORunnerCfg
 from . import go1_env_cfg
 
 ##
@@ -36,6 +37,11 @@ unitreego1_handstand_rough_runner_cfg_v0 = GO1HandStandPPORunnerCfg()
 unitreego1_handstand_rough_runner_cfg_v0.experiment_name = "unitreego1_handstand_rough_v0"
 unitreego1_handstand_rough_runner_cfg_v0.run_name = "v0"
 unitreego1_handstand_rough_runner_cfg_v0.max_iterations = 3001
+
+unitreego1_blind_rough_gait_runner_cfg_v0 = GO1GaitPPORunnerCfg()
+unitreego1_blind_rough_gait_runner_cfg_v0.experiment_name = "unitreego1_blind_rough_gait_v0"
+unitreego1_blind_rough_gait_runner_cfg_v0.run_name = "v0"
+unitreego1_blind_rough_gait_runner_cfg_v0.max_iterations = 3001
 
 # Limx Dynamic Pointfoot
 pf_blind_rough_runner_cfg_v0 = PointFootPPORunnerCfg()
@@ -150,6 +156,31 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": go1_env_cfg.UnitreeGo1HandStandRoughEnvCfg_PLAY_v0,
         "rsl_rl_cfg_entry_point": unitreego1_handstand_rough_runner_cfg_v0,
+    },
+)
+
+
+#############################
+# UnitreeGO1 Blind Rough Gait Environment v0
+#############################
+
+gym.register(
+    id="Isaac-UnitreeGO1-Blind-Rough-Gait-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1BlindRoughGaitEnvCfg_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_blind_rough_gait_runner_cfg_v0,
+    },
+)
+
+gym.register(
+    id="Isaac-UnitreeGO1-Blind-Rough-Gait-Play-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": go1_env_cfg.UnitreeGo1BlindRoughGaitEnvCfg_PLAY_v0,
+        "rsl_rl_cfg_entry_point": unitreego1_blind_rough_gait_runner_cfg_v0,
     },
 )
 
