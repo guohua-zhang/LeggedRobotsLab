@@ -40,7 +40,7 @@ unitreego1_handstand_rough_runner_cfg_v0.max_iterations = 3001
 
 unitreego1_blind_rough_gait_runner_cfg_v0 = GO1GaitPPORunnerCfg()
 unitreego1_blind_rough_gait_runner_cfg_v0.experiment_name = "unitreego1_blind_rough_gait_v0"
-unitreego1_blind_rough_gait_runner_cfg_v0.run_name = "v0"
+unitreego1_blind_rough_gait_runner_cfg_v0.run_name = "v1"
 unitreego1_blind_rough_gait_runner_cfg_v0.max_iterations = 3001
 
 # Limx Dynamic Pointfoot
