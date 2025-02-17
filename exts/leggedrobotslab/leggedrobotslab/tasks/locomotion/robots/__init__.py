@@ -1,10 +1,5 @@
 import gymnasium as gym
 
-# Limx Dynamic Pointfoot
-from leggedrobotslab.tasks.locomotion.config.limx_pf.agents.rsl_rl_ppo_cfg import PointFootPPORunnerCfg
-from leggedrobotslab.tasks.locomotion.config.limx_pf.agents.rsl_rl_ppo_mlp_cfg import PFRoughPPORunnerEncCfg
-from . import pointfoot_env_cfg
-
 # Unitree GO1
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg import GO1PPORunnerCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_mlp_cfg import GO1RoughPPORunnerEncCfg
@@ -12,6 +7,15 @@ from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_v
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_handstand import GO1HandStandPPORunnerCfg
 from leggedrobotslab.tasks.locomotion.config.unitree_go1.agents.rsl_rl_ppo_cfg_gait import GO1GaitPPORunnerCfg
 from . import go1_env_cfg
+
+# Unitree G1
+from leggedrobotslab.tasks.locomotion.config.unitree_g1.agents.rsl_rl_ppo_cfg import G1PPORunnerCfg
+from . import g1_env_cfg
+
+# Limx Dynamic Pointfoot
+from leggedrobotslab.tasks.locomotion.config.limx_pf.agents.rsl_rl_ppo_cfg import PointFootPPORunnerCfg
+from leggedrobotslab.tasks.locomotion.config.limx_pf.agents.rsl_rl_ppo_mlp_cfg import PFRoughPPORunnerEncCfg
+from . import pointfoot_env_cfg
 
 ##
 # Create PPO runners for RSL-RL
@@ -42,6 +46,12 @@ unitreego1_blind_rough_gait_runner_cfg_v0 = GO1GaitPPORunnerCfg()
 unitreego1_blind_rough_gait_runner_cfg_v0.experiment_name = "unitreego1_blind_rough_gait_v0"
 unitreego1_blind_rough_gait_runner_cfg_v0.run_name = "v1"
 unitreego1_blind_rough_gait_runner_cfg_v0.max_iterations = 3001
+
+# Unitree G1
+unitreeg1_blind_rough_runner_cfg_v0 = G1PPORunnerCfg()
+unitreeg1_blind_rough_runner_cfg_v0.experiment_name = "unitreeg1_blind_rough_v0"
+unitreeg1_blind_rough_runner_cfg_v0.run_name = "v0"
+unitreeg1_blind_rough_runner_cfg_v0.max_iterations = 5001
 
 # Limx Dynamic Pointfoot
 pf_blind_rough_runner_cfg_v0 = PointFootPPORunnerCfg()
@@ -181,6 +191,31 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": go1_env_cfg.UnitreeGo1BlindRoughGaitEnvCfg_PLAY_v0,
         "rsl_rl_cfg_entry_point": unitreego1_blind_rough_gait_runner_cfg_v0,
+    },
+)
+
+
+#############################
+# UnitreeG1 Blind Rough Environment v0
+#############################
+
+gym.register(
+    id="Isaac-UnitreeG1-Blind-Rough-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": g1_env_cfg.UnitreeG1BlindRoughEnvCfg_v0,
+        "rsl_rl_cfg_entry_point": unitreeg1_blind_rough_runner_cfg_v0,
+    },
+)
+
+gym.register(
+    id="Isaac-UnitreeG1-Blind-Rough-Play-v0",
+    entry_point="omni.isaac.lab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": g1_env_cfg.UnitreeG1BlindRoughEnvCfg_PLAY_v0,
+        "rsl_rl_cfg_entry_point": unitreeg1_blind_rough_runner_cfg_v0,
     },
 )
 

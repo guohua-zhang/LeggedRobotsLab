@@ -446,10 +446,10 @@ class RewardsCfg:
 
     # --------------- rewards ---------------
     rew_track_lin_vel_xy_exp = RewTerm(
-        func=mdp.track_lin_vel_xy_exp, weight=1.5, params={"command_name": "base_velocity", "std": math.sqrt(0.25)}
+        func=mdp.track_lin_vel_xy_exp, weight=3.0, params={"command_name": "base_velocity", "std": math.sqrt(0.25)}
     )
     rew_track_ang_vel_z_exp = RewTerm(
-        func=mdp.track_ang_vel_z_exp, weight=0.75, params={"command_name": "base_velocity", "std": math.sqrt(0.25)}
+        func=mdp.track_ang_vel_z_exp, weight=1.5, params={"command_name": "base_velocity", "std": math.sqrt(0.25)}
     )
     # rew_feet_air_time = RewTerm(
     #     func=mdp.feet_air_time,
@@ -506,14 +506,14 @@ class RewardsCfg:
     #     params={"command_name": "base_velocity"},
     # )
 
-    pen_feet_clearance = RewTerm(
-        func=mdp.feet_clearance,
-        weight=-0.01,
-        params={
-            "asset_feet_cfg": SceneEntityCfg("robot", body_names=".*_foot"),
-            "target_feet_height": -0.2,
-        },
-    )
+    # pen_feet_clearance = RewTerm(
+    #     func=mdp.feet_clearance,
+    #     weight=-0.01,
+    #     params={
+    #         "asset_feet_cfg": SceneEntityCfg("robot", body_names=".*_foot"),
+    #         "target_feet_height": -0.2,
+    #     },
+    # )
     # Gait reward
     pen_gait_reward = RewTerm(
         func=mdp.GaitRewardQuad,
