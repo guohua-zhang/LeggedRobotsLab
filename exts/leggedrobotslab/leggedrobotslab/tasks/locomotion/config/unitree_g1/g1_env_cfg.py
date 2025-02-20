@@ -273,15 +273,15 @@ class EventCfg:
         },
     )
 
-    randomize_link_mass = EventTerm(
-        func=mdp.randomize_rigid_body_mass,
-        mode="startup",
-        params={
-            "asset_cfg": SceneEntityCfg("robot", body_names=[".*_hip", ".*_thigh", ".*_calf"]),
-            "mass_distribution_params": (0.8, 1.2),
-            "operation": "scale",
-        },
-    )
+    # randomize_link_mass = EventTerm(
+    #     func=mdp.randomize_rigid_body_mass,
+    #     mode="startup",
+    #     params={
+    #         "asset_cfg": SceneEntityCfg("robot", body_names=[".*_hip", ".*_thigh", ".*_calf"]),
+    #         "mass_distribution_params": (0.8, 1.2),
+    #         "operation": "scale",
+    #     },
+    # )
 
     randomize_robot_joint_stiffness_and_damping = EventTerm(
         func=mdp.randomize_actuator_gains,

@@ -13,7 +13,7 @@ from omni.isaac.lab.managers import TerminationTermCfg as DoneTerm
 from omni.isaac.lab.scene import InteractiveSceneCfg
 from omni.isaac.lab.sensors import ContactSensorCfg, RayCasterCfg, RayCasterCameraCfg, patterns
 from omni.isaac.lab.sim import DomeLightCfg, MdlFileCfg, RigidBodyMaterialCfg, DistantLightCfg
-from omni.isaac.lab.terrains import TerrainImporterCfg
+from omni.isaac.lab.terrains import TerrainImporterCfg, FlatPatchSamplingCfg, TerrainGeneratorCfg
 from omni.isaac.lab.utils import configclass
 from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR, ISAACLAB_NUCLEUS_DIR
 from omni.isaac.lab.utils.noise import AdditiveUniformNoiseCfg as UniformNoise
@@ -22,7 +22,6 @@ from omni.isaac.lab.terrains.config.rough import ROUGH_TERRAINS_CFG
 from omni.isaac.lab_tasks.manager_based.locomotion.velocity.velocity_env_cfg import CommandsCfg as BaseCommandsCfg
 
 import omni.isaac.lab.terrains as terrain_gen
-from omni.isaac.lab.terrains import TerrainGeneratorCfg
 
 from leggedrobotslab.tasks.locomotion import mdp
 
@@ -32,7 +31,7 @@ from leggedrobotslab.tasks.locomotion import mdp
 ##
 
 
-ROUGH_TERRAINS_CFG_v1 = TerrainGeneratorCfg(
+GO1_Vision_TERRAINS_CFG = TerrainGeneratorCfg(
     size=(8.0, 8.0),
     border_width=20.0,
     num_rows=10,
@@ -42,37 +41,66 @@ ROUGH_TERRAINS_CFG_v1 = TerrainGeneratorCfg(
     slope_threshold=0.75,
     use_cache=False,
     sub_terrains={
-        "pyramid_stairs": terrain_gen.MeshPyramidStairsTerrainCfg(
-            proportion=0.2,
-            step_height_range=(0.05, 0.23),
-            step_width=0.3,
-            platform_width=3.0,
-            border_width=1.0,
-            holes=False,
-        ),
-        "pyramid_stairs_inv": terrain_gen.MeshInvertedPyramidStairsTerrainCfg(
-            proportion=0.2,
-            step_height_range=(0.05, 0.23),
-            step_width=0.3,
-            platform_width=3.0,
-            border_width=1.0,
-            holes=False,
-        ),
-        "boxes": terrain_gen.MeshRandomGridTerrainCfg(
-            proportion=0.2, grid_width=0.45, grid_height_range=(0.05, 0.2), platform_width=2.0
-        ),
+        # "pyramid_stairs": terrain_gen.MeshPyramidStairsTerrainCfg(
+        #     proportion=0.2,
+        #     step_height_range=(0.05, 0.17),
+        #     step_width=0.3,
+        #     platform_width=3.0,
+        #     border_width=1.0,
+        #     holes=False,
+        # ),
+        # "pyramid_stairs_inv": terrain_gen.MeshInvertedPyramidStairsTerrainCfg(
+        #     proportion=0.2,
+        #     step_height_range=(0.05, 0.17),
+        #     step_width=0.3,
+        #     platform_width=3.0,
+        #     border_width=1.0,
+        #     holes=False,
+        # ),
+        # "boxes": terrain_gen.MeshRandomGridTerrainCfg(
+        #     proportion=0.2, grid_width=0.45, grid_height_range=(0.05, 0.1), platform_width=2.0
+        # ),
+        # "flat": terrain_gen.MeshPlaneTerrainCfg(proportion=0.1),
         "random_rough": terrain_gen.HfRandomUniformTerrainCfg(
-            proportion=0.1, noise_range=(0.02, 0.10), noise_step=0.02, border_width=0.25
+            proportion=0.01, noise_range=(0.02, 0.05), noise_step=0.02, border_width=0.25
         ),
-        "hf_pyramid_slope": terrain_gen.HfPyramidSlopedTerrainCfg(
-            proportion=0.1, slope_range=(0.0, 0.4), platform_width=2.0, border_width=0.25
+        # "gaps": terrain_gen.MeshGapTerrainCfg(
+        #     proportion=0.1, gap_width_range=(0.5, 1.0), platform_width=2.0
+        # ),
+        # "hf_pyramid_slope": terrain_gen.HfPyramidSlopedTerrainCfg(
+        #     proportion=0.1, slope_range=(0.0, 0.2), platform_width=2.0, border_width=0.25
+        # ),
+        # "hf_pyramid_slope_inv": terrain_gen.HfInvertedPyramidSlopedTerrainCfg(
+        #     proportion=0.1, slope_range=(0.0, 0.2), platform_width=2.0, border_width=0.25 
+        # ),
+        "init_pos": terrain_gen.HfDiscreteObstaclesTerrainCfg(
+            proportion=0.6, 
+            num_obstacles=10,
+            obstacle_height_mode="fixed",
+            obstacle_height_range=(0.3, 2.0), obstacle_width_range=(0.4, 1.0), 
+            platform_width=0.0
         ),
-        "hf_pyramid_slope_inv": terrain_gen.HfInvertedPyramidSlopedTerrainCfg(
-            proportion=0.1, slope_range=(0.0, 0.4), platform_width=2.0, border_width=0.25
-        ),
-        "waves": terrain_gen.HfWaveTerrainCfg(proportion=0.1, amplitude_range=(0.02, 0.1), num_waves=10, border_width=0.25),
+        # "cylinder": terrain_gen.MeshRepeatedCylindersTerrainCfg(
+        #     proportion=0.2,
+        #     platform_width=0.0,
+        #     object_type="cylinder",
+        #     object_params_start=terrain_gen.MeshRepeatedCylindersTerrainCfg.ObjectCfg(
+        #         num_objects=4,
+        #         height=1.0,
+        #         radius=0.5
+        #     ),
+        #     object_params_end=terrain_gen.MeshRepeatedCylindersTerrainCfg.ObjectCfg(
+        #         num_objects=8,
+        #         height=0.6,
+        #         radius=0.2
+        #     ),
+        # )
     },
 )
+for sub_terrain_name, sub_terrain_cfg in GO1_Vision_TERRAINS_CFG.sub_terrains.items():
+    sub_terrain_cfg.flat_patch_sampling = {
+        sub_terrain_name: FlatPatchSamplingCfg(num_patches=2, patch_radius=[0.01,0.1,0.2, 0.3, 0.5,0.6, 0.7, 1.0, 1.2, 1.5], max_height_diff=0.3)
+    }
 
 
 @configclass
@@ -83,7 +111,7 @@ class SceneCfg(InteractiveSceneCfg):
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
         terrain_type="generator",
-        terrain_generator=ROUGH_TERRAINS_CFG,
+        terrain_generator=GO1_Vision_TERRAINS_CFG,
         max_init_terrain_level=5,
         collision_group=-1,
         physics_material=RigidBodyMaterialCfg(
@@ -115,10 +143,22 @@ class SceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/Robot/base",
         offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20.0)),
         attach_yaw_only=True,
-        pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]),
+        # pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]),
+        pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[3.0, 2.0]),
         debug_vis=False,
         mesh_prim_paths=["/World/ground"],
     )
+    # lidar_sensor = RayCasterCfg(
+    #     prim_path="{ENV_REGEX_NS}/Robot/Head_lower",
+    #     # offset=RayCasterCfg.OffsetCfg(pos=(0.28945, 0.0, -0.046), rot=(0., -0.991,0.0,-0.131)),
+    #     offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, -0.0), rot=(0., -0.991,0.0,-0.131)),
+    #     attach_yaw_only=False,
+    #     pattern_cfg=patterns.LidarPatternCfg(
+    #         channels=32, vertical_fov_range=(0.0, 90.0), horizontal_fov_range=(-180, 180.0), horizontal_res=4.0
+    #     ),
+    #     debug_vis=False,
+    #     mesh_prim_paths=["/World/ground"],
+    # )
 
     # camera sensors
     depth_sensor = RayCasterCameraCfg(
@@ -170,7 +210,7 @@ class CommandsCfg:
         heading_control_stiffness=0.5,
         debug_vis=True,
         ranges=mdp.UniformVelocityCommandCfg.Ranges(
-            lin_vel_x=(-1.5, 1.5), lin_vel_y=(-1.0, 1.0), ang_vel_z=(-1.0, 1.0), heading=(-math.pi, math.pi)
+            lin_vel_x=(-1.0, 1.0), lin_vel_y=(-1.0, 1.0), ang_vel_z=(-1.0, 1.0), heading=(-math.pi, math.pi)
         ),
     )
 
@@ -241,11 +281,10 @@ class ObservationsCfg:
         # )
 
         def __post_init__(self):
-            # 带噪声的观测
             self.enable_corruption = True
-            self.concatenate_terms = False
+            self.concatenate_terms = True
             self.history_length = 1
-            self.flatten_history_dim = False
+            self.flatten_history_dim = True
 
     @configclass
     class CriticCfg(ObsGroup):
@@ -282,7 +321,6 @@ class ObservationsCfg:
         )
 
         def __post_init__(self):
-            # 带噪声的观测
             self.enable_corruption = False
             self.concatenate_terms = True
             self.history_length = 1
@@ -500,6 +538,7 @@ class RewardsCfg:
     # )
 
     # --------------- penalties ---------------
+    termination_penalty = RewTerm(func=mdp.is_terminated, weight=-200.0)
     pen_lin_vel_z_l2 = RewTerm(func=mdp.lin_vel_z_l2, weight=-2.0)
     pen_ang_vel_xy_l2 = RewTerm(func=mdp.ang_vel_xy_l2, weight=-0.05)
 
@@ -532,17 +571,17 @@ class RewardsCfg:
     )
     pen_undesired_contacts = RewTerm(
         func=mdp.undesired_contacts,
-        weight=-1.0,
+        weight=-5.0,
         params={
-            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_thigh", ".*_calf"]),
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_hip", ".*_thigh", ".*_calf"]),
             "threshold": 1.0,
         },
     )
-    # pen_stand_still_when_zero_command = RewTerm(
-    #     func=mdp.stand_still_when_zero_command,
-    #     weight=-0.5,
-    #     params={"command_name": "base_velocity"},
-    # )
+    pen_stand_still_when_zero_command = RewTerm(
+        func=mdp.stand_still_when_zero_command,
+        weight=-0.5,
+        params={"command_name": "base_velocity"},
+    )
 
     pen_feet_clearance = RewTerm(
         func=mdp.feet_clearance,
@@ -552,6 +591,16 @@ class RewardsCfg:
             "target_feet_height": -0.2,
         },
     )
+
+    feet_slide = RewTerm(
+        func=mdp.feet_slide,
+        weight=-0.05,
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=".*foot"),
+            "asset_cfg": SceneEntityCfg("robot", body_names=".*foot"),
+        },
+    )
+
     # # Gait reward
     # pen_gait_reward = RewTerm(
     #     func=mdp.GaitRewardQuad,
@@ -577,6 +626,18 @@ class TerminationsCfg:
     base_contact = DoneTerm(
         func=mdp.illegal_contact,
         params={"sensor_cfg": SceneEntityCfg("contact_forces", body_names="trunk"), "threshold": 1.0},
+    )
+    hip_contact = DoneTerm(
+        func=mdp.illegal_contact,
+        params={"sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_hip"]), "threshold": 1.0},
+    )
+    leg_contact = DoneTerm(
+        func=mdp.illegal_contact,
+        params={"sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_calf"]), "threshold": 1.0},
+    )
+    bad_orientation = DoneTerm(
+        func=mdp.bad_orientation,
+        params={"limit_angle": 1.0},
     )
 
 
